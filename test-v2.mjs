@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const dir=fs.mkdtempSync(path.join(os.tmpdir(),'sharmani-v2-'));
+process.env.DATA_DIR=dir;
+process.env.JWT_SECRET='test-secret-with-more-than-32-characters-long';
+process.env.NODE_ENV='test';
+const {db}=await import('./src/db.js');
+const {integrationStatus,audit}=await import('./src/v2.js');
+test('v2 integrations are transparent about unavailable OAuth',()=>{const list=integrationStatus();assert.equal(list.length,9);assert.equal(list.find(x=>x.provider==='instagram').automaticPublishing,false)});
+test('v2 billing and audit schema exists',()=>{assert.ok(db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='billing_requests'").get());audit(null,'test',{ok:true});assert.equal(db.prepare('SELECT COUNT(*) n FROM audit_events').get().n,1)});
+test('existing user and post schema remains intact',()=>{for(const table of ['users','posts','deliveries','subscriptions'])assert.ok(db.prepare('SELECT name FROM sqlite_master WHERE name=?').get(table))});

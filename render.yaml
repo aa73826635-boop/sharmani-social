@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: sharmani-social-v2
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    disk:
+      name: sharmani-data
+      mountPath: /app/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /app/data
+      - key: ADMIN_EMAIL
+        value: aa73826635@gmail.com
+      - key: CONTACT_EMAIL
+        value: aa73826635@gmail.com
+      - key: JWT_SECRET
+        generateValue: true

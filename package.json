@@ -1,0 +1,27 @@
+{
+  "name": "sharmani-social",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test",
+    "admin:setup": "node src/admin-setup.js",
+    "backup": "node src/backup.js",
+    "check": "node --check src/server.js && node --check src/v2.js && node --check src/admin-setup.js && node --check src/backup.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "better-sqlite3": "^11.8.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "helmet": "^8.0.0",
+    "express-rate-limit": "^7.5.0",
+    "dotenv": "^16.4.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
