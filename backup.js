@@ -1,0 +1,11 @@
+import 'dotenv/config';
+import {db} from './db.js';
+import fs from 'node:fs';
+import path from 'node:path';
+const dir=path.resolve(process.env.DATA_DIR||'./data');
+const dest=path.join(dir,'backups');
+fs.mkdirSync(dest,{recursive:true});
+const file=path.join(dest,`sharmani-${new Date().toISOString().replace(/[:.]/g,'-')}.db`);
+await db.backup(file);
+console.log('SQLite backup created:',file);
+db.close();
